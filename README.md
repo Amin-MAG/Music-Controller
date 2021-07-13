@@ -13,48 +13,46 @@ Music Controller is the file that I handled the logic of this music player. I di
 The Music Control is commented and you can find out each task in these comments. 
 
 ```kotlin
-	...
-		/**
-     * [playingTrack] is for task number 1 to get the playing track.
-     * It is live data and you can take the advantage of this.
-     * Also you can not change the value from outside of the controller.
-     */
-    val playingTrack: LiveData<Track> = _selectedTrack
-    val playlist: LiveData<List<Track>> = _playlist
+/**
+ * [playingTrack] is for task number 1 to get the playing track.
+ * It is live data and you can take the advantage of this.
+ * Also you can not change the value from outside of the controller.
+ */
+val playingTrack: LiveData<Track> = _selectedTrack
+val playlist: LiveData<List<Track>> = _playlist
 
-    init {
-        _playlist.value = tracks
-    }
+init {
+    _playlist.value = tracks
+}
 
-    /**
-     * [playOrResume] is implemented for task number 5 to play or resume the track.
-     * It will return null if any errors occur.Else, It will return the playing track,
-     * so that we can get the progress time by track. progress
-     * Here we use a State design pattern to handle our states. for now two kinds of
-     * state is available: playing, pause.
-     */
-    fun playOrResume(): Track? {
-        state.play()?.let {
-            _selectedTrack.value = it
-            return _selectedTrack.value
-        }
-        return null
+/**
+ * [playOrResume] is implemented for task number 5 to play or resume the track.
+ * It will return null if any errors occur.Else, It will return the playing track,
+ * so that we can get the progress time by track. progress
+ * Here we use a State design pattern to handle our states. for now two kinds of
+ * state is available: playing, pause.
+ */
+fun playOrResume(): Track? {
+    state.play()?.let {
+        _selectedTrack.value = it
+        return _selectedTrack.value
     }
+    return null
+}
 
-    /**
-     * [pause] is implemented for task number 4 to pause the playing track by
-     * giving the time.
-     * Here we use a State design pattern to handle our states. for now two kinds of
-     * state is available: playing, pause.
-     */
-    fun pause(time: Long): Boolean {
-        state.pause(time)?.let {
-            _selectedTrack.value = it
-            return true
-        }
-        return false
+/**
+ * [pause] is implemented for task number 4 to pause the playing track by
+ * giving the time.
+ * Here we use a State design pattern to handle our states. for now two kinds of
+ * state is available: playing, pause.
+ */
+fun pause(time: Long): Boolean {
+    state.pause(time)?.let {
+        _selectedTrack.value = it
+        return true
     }
-...
+    return false
+}
 ```
 
 ## LiveData
@@ -66,13 +64,13 @@ The playlist and playing track are integrated by Live Data, so we can take advan
 As you see there is a state instance in Music Controller.
 
 ```kotlin
-		/**
-     * In state design pattern we instantiate the states [pauseState] and
-     * [playingState] then we should have a [state] field.
-     */
-    val pauseState: PauseState = PauseState(this)
-    val playingState: PlayingState = PlayingState(this)
-    var state: IMusicState = pauseState
+/**
+ * In state design pattern we instantiate the states [pauseState] and
+ * [playingState] then we should have a [state] field.
+ */
+val pauseState: PauseState = PauseState(this)
+val playingState: PlayingState = PlayingState(this)
+var state: IMusicState = pauseState
 ```
 
 So maybe this is not necessary but to show I know the design pattern I used the state design pattern. So let's assume that some other states going to be added and the implementation may be changed. In this kind of implementation, we don't need any if condition and actually polymorphism going to handle it.
@@ -102,7 +100,6 @@ class MusicController(
     private val _user: IMusicUser,
     tracks: List<Track>
 ) {
-...
 }
 ```
 
