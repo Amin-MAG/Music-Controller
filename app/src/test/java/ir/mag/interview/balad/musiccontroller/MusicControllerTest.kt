@@ -1,7 +1,6 @@
 package ir.mag.interview.balad.musiccontroller
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.core.widget.TextViewCompat
 import com.google.common.truth.Truth.assertThat
 import ir.mag.interview.balad.musiccontroller.controller.music.MusicController
 import ir.mag.interview.balad.musiccontroller.controller.music.state.PauseState
