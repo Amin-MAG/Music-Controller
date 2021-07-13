@@ -1,7 +1,7 @@
 package ir.mag.interview.balad.musiccontroller
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.core.content.contentValuesOf
+import androidx.core.widget.TextViewCompat
 import com.google.common.truth.Truth.assertThat
 import ir.mag.interview.balad.musiccontroller.controller.music.MusicController
 import ir.mag.interview.balad.musiccontroller.controller.music.state.PauseState
@@ -66,17 +66,17 @@ class MusicControllerTest {
     @Test
     fun playForInvalidPlaylist() {
         val controller = MusicController(NormalMusicUser(), ArrayList())
-        val isPlayed = controller.play()
+        val isPlayed = controller.playOrResume()
 
-        assertThat(isPlayed).isFalse()
+        assertThat(isPlayed).isNull()
     }
 
     @Test
     fun playForValidPlaylist() {
         val controller = MusicController(NormalMusicUser(), playList1)
-        val isPlayed = controller.play()
+        val isPlayed = controller.playOrResume()
 
-        assertThat(isPlayed).isTrue()
+        assertThat(isPlayed).isNotNull()
     }
 
     @Test
@@ -84,8 +84,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList1)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList1[0])
@@ -97,8 +97,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -112,8 +112,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -127,8 +127,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -169,8 +169,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        var isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        var isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         var playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -183,8 +183,8 @@ class MusicControllerTest {
         assertThat(pausedTrack?.progress).isEqualTo(30)
         assertThat(controller.state).isInstanceOf(PauseState::class.java)
 
-        isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -203,8 +203,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -220,8 +220,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -241,8 +241,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         var playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -261,8 +261,8 @@ class MusicControllerTest {
         val controller = MusicController(NormalMusicUser(), playList2)
         assertThat(controller.playingTrack.value).isEqualTo(null)
 
-        val isPlayed = controller.play()
-        assertThat(isPlayed).isTrue()
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
 
         val playingTrack = controller.playingTrack.value
         assertThat(playingTrack).isEqualTo(playList2[0])
@@ -275,5 +275,92 @@ class MusicControllerTest {
         val isStopped = controller.stop()
         assertThat(isStopped).isTrue()
         assertThat(controller.state).isEqualTo(controller.pauseState)
+    }
+
+    @Test
+    fun resumeWhilePlaying() {
+        val controller = MusicController(NormalMusicUser(), playList2)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        val playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList2[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isResumed = controller.playOrResume()
+        assertThat(isResumed).isNull()
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+    }
+
+    @Test
+    fun resumeWhilePause() {
+        val controller = MusicController(NormalMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        var playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isPaused = controller.pause(3)
+        assertThat(isPaused).isTrue()
+        assertThat(controller.state).isEqualTo(controller.pauseState)
+
+        val isResumed = controller.playOrResume()
+        assertThat(isResumed).isNotNull()
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack?.progress).isEqualTo(3)
+        assertThat(controller.state).isEqualTo(controller.playingState)
+
+        val isStopped = controller.stop()
+        assertThat(isStopped).isTrue()
+        assertThat(controller.state).isEqualTo(controller.pauseState)
+
+        val isResumedAgain = controller.playOrResume()
+        assertThat(isResumedAgain).isNotNull()
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isEqualTo(controller.playingState)
+    }
+
+    @Test
+    fun skipTwoTrack() {
+        val controller = MusicController(NormalMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        var playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        var isSkipped = controller.skip()
+        assertThat(isSkipped).isNotNull()
+        assertThat(isSkipped).isEqualTo(playList1[1])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[1])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isPaused = controller.pause(3)
+        assertThat(isPaused).isTrue()
+        assertThat(controller.state).isEqualTo(controller.pauseState)
+
+        isSkipped = controller.skip()
+        assertThat(isSkipped).isNotNull()
+        assertThat(isSkipped).isEqualTo(playList1[2])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[2])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PauseState::class.java)
     }
 }

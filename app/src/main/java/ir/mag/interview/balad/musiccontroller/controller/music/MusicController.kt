@@ -27,12 +27,12 @@ class MusicController(
         _playlist.value = tracks
     }
 
-    fun play(): Boolean {
+    fun playOrResume(): Track? {
         state.play()?.let {
             _selectedTrack.value = it
-            return true
+            return _selectedTrack.value
         }
-        return false
+        return null
     }
 
     fun pause(time: Long): Boolean {
@@ -44,11 +44,24 @@ class MusicController(
     }
 
     fun stop(): Boolean {
-        state.stop()?.let {
+        playingTrack.value?.let {
+            it.progress = 0
             _selectedTrack.value = it
+            state = pauseState
             return true
         }
         return false
+    }
+
+    fun skip(): Track? {
+        _playlist.value?.let {
+            var idx = it.indexOf(_selectedTrack.value)
+            if (idx + 1 > it.size) idx = 0 else idx++
+            it[idx].progress = 0
+            _selectedTrack.value = it[idx]
+            return _selectedTrack.value
+        }
+        return null
     }
 
     fun getNextTracks(): List<Track> {

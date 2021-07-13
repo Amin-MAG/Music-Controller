@@ -5,7 +5,7 @@ import ir.mag.interview.balad.musiccontroller.model.Track
 
 class PlayingState(private val musicController: MusicController) : IMusicState {
     override fun play(): Track? {
-        // Do nothing
+        // Do nothing for now
         return null
     }
 
@@ -13,15 +13,6 @@ class PlayingState(private val musicController: MusicController) : IMusicState {
         musicController.playingTrack.value?.let {
             if (time > it.trackLength) return null
             it.progress = time
-            musicController.state = musicController.pauseState
-            return it
-        }
-        return null
-    }
-
-    override fun stop(): Track? {
-        musicController.playingTrack.value?.let {
-            it.progress = 0
             musicController.state = musicController.pauseState
             return it
         }

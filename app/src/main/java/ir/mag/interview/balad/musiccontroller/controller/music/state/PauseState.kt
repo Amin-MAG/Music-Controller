@@ -7,23 +7,19 @@ class PauseState(private val musicController: MusicController) : IMusicState {
     override fun play(): Track? {
         musicController.playlist.value?.let {
             if (it.isEmpty()) return null
-            // play the first track in the play list
             musicController.state = musicController.playingState
-            return it[0]
+            return if (musicController.playingTrack.value == null) {
+                // play the first track in the play list
+                it[0]
+            } else {
+                musicController.playingTrack.value
+            }
         }
         return null
     }
 
     override fun pause(time: Long): Track? {
-        // Do nothing
-        return null
-    }
-
-    override fun stop(): Track? {
-        musicController.playingTrack.value?.let {
-            it.progress = 0
-            return it
-        }
+        // Do nothing for now
         return null
     }
 }
