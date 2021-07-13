@@ -11,4 +11,6 @@ import ir.mag.interview.balad.musiccontroller.model.Track
  */
 interface IMusicUser {
     fun updatePlaylist(tracks: List<Track>): List<Track>?
+    fun back(tracks: List<Track>, playing: Track): Track?
+    fun addTrackInstantly(tracks: List<Track>, track: Track, playing: Track): List<Track>?
 }

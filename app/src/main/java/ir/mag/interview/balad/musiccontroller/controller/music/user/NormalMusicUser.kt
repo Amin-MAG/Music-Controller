@@ -7,4 +7,14 @@ class NormalMusicUser : IMusicUser {
         if (tracks.size < 5) return null
         return tracks.shuffled()
     }
+
+    override fun back(tracks: List<Track>, playing: Track): Track? {
+        // normal user can not back
+        return null
+    }
+
+    override fun addTrackInstantly(tracks: List<Track>, track: Track, playing: Track): List<Track>? {
+        // normal user can not back
+        return null
+    }
 }

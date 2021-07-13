@@ -64,6 +64,30 @@ class MusicController(
         return null
     }
 
+    fun back(): Track? {
+        playlist.value?.let { pl ->
+            _selectedTrack.value?.let { st ->
+                _user.back(pl, st)?.let {
+                    _selectedTrack.value = it
+                    return _selectedTrack.value
+                }
+            }
+        }
+        return null
+    }
+
+    fun addTrackInstantly(track: Track): Boolean {
+        playlist.value?.let { pl ->
+            _selectedTrack.value?.let { st ->
+                _user.addTrackInstantly(pl, track, st)?.let {
+                    _playlist.value = it
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     fun getNextTracks(): List<Track> {
         _playlist.value?.let {
             val idx = it.indexOf(_selectedTrack.value)

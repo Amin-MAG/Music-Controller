@@ -363,4 +363,110 @@ class MusicControllerTest {
         assertThat(playingTrack?.progress).isEqualTo(0)
         assertThat(controller.state).isInstanceOf(PauseState::class.java)
     }
+
+    @Test
+    fun backForNormalUser() {
+        val controller = MusicController(NormalMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        val playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isBacked = controller.back()
+        assertThat(isBacked).isNull()
+    }
+
+    @Test
+    fun backForPremiumUser() {
+        val controller = MusicController(PremiumMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        var playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isSkipped = controller.skip()
+        assertThat(isSkipped).isNotNull()
+        assertThat(isSkipped).isEqualTo(playList1[1])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[1])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isBacked = controller.back()
+        assertThat(isBacked).isNotNull()
+        assertThat(isBacked).isEqualTo(playList1[0])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isBackedAgain = controller.back()
+        assertThat(isBackedAgain).isNotNull()
+        assertThat(isBackedAgain).isEqualTo(playList1[playList1.size - 1])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[playList1.size - 1])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+    }
+
+    @Test
+    fun addTrackInstantlyForNormalUser() {
+        val controller = MusicController(NormalMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        val playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isAdded = controller.addTrackInstantly(testTrack10)
+        assertThat(isAdded).isFalse()
+    }
+
+    @Test
+    fun addTrackInstantlyForPremiumUser() {
+        val controller = MusicController(PremiumMusicUser(), playList1)
+        assertThat(controller.playingTrack.value).isEqualTo(null)
+
+        val isPlayed = controller.playOrResume()
+        assertThat(isPlayed).isNotNull()
+
+        var playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[0])
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isAdded = controller.addTrackInstantly(testTrack10)
+        assertThat(isAdded).isTrue()
+
+        val isSkipped = controller.skip()
+        assertThat(isSkipped).isNotNull()
+        assertThat(isSkipped).isEqualTo(testTrack10)
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(testTrack10)
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+
+        val isSkippedAgain = controller.skip()
+        assertThat(isSkippedAgain).isNotNull()
+        assertThat(isSkippedAgain).isEqualTo(playList1[1])
+
+        playingTrack = controller.playingTrack.value
+        assertThat(playingTrack).isEqualTo(playList1[1])
+        assertThat(playingTrack?.progress).isEqualTo(0)
+        assertThat(controller.state).isInstanceOf(PlayingState::class.java)
+    }
 }
