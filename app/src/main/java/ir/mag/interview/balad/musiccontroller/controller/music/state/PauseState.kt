@@ -3,6 +3,11 @@ package ir.mag.interview.balad.musiccontroller.controller.music.state
 import ir.mag.interview.balad.musiccontroller.controller.music.MusicController
 import ir.mag.interview.balad.musiccontroller.model.Track
 
+/**
+ * [PauseState]
+ * In state design pattern we have an instance of the object. It is going to
+ * be passed by constructor
+ */
 class PauseState(private val musicController: MusicController) : IMusicState {
     override fun play(): Track? {
         musicController.playlist.value?.let {
