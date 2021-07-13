@@ -50,7 +50,7 @@ class MusicController(
      */
     fun playOrResume(): Track? {
         state.play()?.let {
-            _selectedTrack.value = it
+            _selectedTrack.postValue(it)
             return _selectedTrack.value
         }
         return null
@@ -64,7 +64,7 @@ class MusicController(
      */
     fun pause(time: Long): Boolean {
         state.pause(time)?.let {
-            _selectedTrack.value = it
+            _selectedTrack.postValue(it)
             return true
         }
         return false
@@ -77,7 +77,7 @@ class MusicController(
     fun stop(): Boolean {
         playingTrack.value?.let {
             it.progress = 0
-            _selectedTrack.value = it
+            _selectedTrack.postValue(it)
             state = pauseState
             return true
         }
@@ -94,7 +94,7 @@ class MusicController(
             var idx = it.indexOf(_selectedTrack.value)
             if (idx + 1 >= it.size) idx = 0 else idx++
             it[idx].progress = 0
-            _selectedTrack.value = it[idx]
+            _selectedTrack.postValue(it[idx])
             return _selectedTrack.value
         }
         return null
@@ -109,7 +109,7 @@ class MusicController(
         playlist.value?.let { pl ->
             _selectedTrack.value?.let { st ->
                 _user.back(pl, st)?.let {
-                    _selectedTrack.value = it
+                    _selectedTrack.postValue(it)
                     return _selectedTrack.value
                 }
             }
@@ -126,7 +126,7 @@ class MusicController(
         playlist.value?.let { pl ->
             _selectedTrack.value?.let { st ->
                 _user.addTrackInstantly(pl, track, st)?.let {
-                    _playlist.value = it
+                    _playlist.postValue(it)
                     return true
                 }
             }
@@ -156,7 +156,7 @@ class MusicController(
     fun updatePlaylist(tracks: List<Track>): Boolean {
         _user.updatePlaylist(tracks)?.let {
             _playlist.value = it
-            _selectedTrack.value = it[0]
+            _selectedTrack.postValue(it[0])
             return true
         }
         return false
