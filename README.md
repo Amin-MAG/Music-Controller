@@ -1,12 +1,10 @@
-# Balad Interview
+# Music Controller - Balad Interview
 
-✍️ Mohammad Amin Ghasvari
-
-# 🔍 Overview
+## 🔍 Overview
 
 This is for notes are for Balad interview tasks. The documentation of the tasks was a little ambiguous! Anyway, I tried to implement the program that makes sense. 
 
-# 🔧 Implementation
+## 🔧 Implementation
 
 Music Controller is the file that I handled the logic of this music player. I didn't have much time to put on the UI/UX side of the application and it seems that UI doesn't matter a lot based on the documentation. 
 
@@ -55,11 +53,11 @@ fun pause(time: Long): Boolean {
 }
 ```
 
-## LiveData
+### LiveData
 
 The playlist and playing track are integrated by Live Data, so we can take advantage of it outside of the class.
 
-## States
+### States
 
 As you see there is a state instance in Music Controller.
 
@@ -88,7 +86,7 @@ interface IMusicState {
 
 Like the big "Gum Ball" example, we add the actions to the interface and we going to have one class for each one of our states.
 
-## Users
+### Users
 
 You should pass a user to the constructor. Because some decision is based on the user type. I predicted that we may have another kind of user in our application. So let's avoid if condition and make it cleaner!
 
@@ -121,14 +119,15 @@ interface IMusicUser {
 
 Premium users and normal users are implemented in the way that the document said.
 
-# 🧪 Tests
+## 🧪 Tests
 
 There is a Music Controller Test that I tested each one of the logic of the program. There are 20 tests.
 
 ![doc/Untitled.png](doc/Untitled.png)
 
-# 🎨 View
+## 🎨 View
 
 The UI is just like what the document wanted. When the recycler is scrolled then it will go above the header. Also, I add some buttons and a switch for Normal/Premium to test some of the features interactively.
 
-🤔 So I think that's it!
+
+✍️ Mohammad Amin Ghasvari
