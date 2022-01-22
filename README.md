@@ -2,7 +2,7 @@
 
 ## 🔍 Overview
 
-This is for notes are for Balad interview tasks. The documentation of the tasks was a little ambiguous! Anyway, I tried to implement the program that makes sense. 
+This report is for Balad interview task. The documentation of the tasks was a little ambiguous! Anyway, I tried to implement the program that makes sense. 
 
 ## 🔧 Implementation
 
